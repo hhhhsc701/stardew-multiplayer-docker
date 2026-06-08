@@ -128,6 +128,8 @@ services:
     volumes:
       # Saves go here now
       - ./valley_saves:/config/xdg/config/StardewValley/Saves
+      # Mods are mounted from the local directory instead of baked into the image
+      - ./mods:/data/Stardew/game/Mods
       # If you'd like to set an existing savegame before the first start otherwise this file will be edited when starting the first game
       - ./configs/autoload.json:/data/Stardew/game/Mods/AutoLoadGame/config.json
     # deploy:

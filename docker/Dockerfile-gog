@@ -24,8 +24,7 @@ RUN wget --user-agent="Mozilla" https://github.com/Pathoschild/SMAPI/releases/do
     SMAPI_INSTALLER=$(find /data/nexus -name 'SMAPI*.*Installer' -type f -path "*/SMAPI * installer/internal/linux/*" | head -n 1) && \
     /bin/bash -c "SMAPI_NO_TERMINAL=true SMAPI_USE_CURRENT_SHELL=true echo -e '2\n\n' | \"$SMAPI_INSTALLER\" --install --game-path '/data/Stardew/game'" || :
 
-# Add Mods & Scripts
-COPY ["mods/", "/data/Stardew/game/Mods/"]
+# Add Scripts
 COPY scripts/ /opt/
 
 RUN chmod +x /data/Stardew/game/StardewValley && \

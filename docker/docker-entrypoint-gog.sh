@@ -1,17 +1,23 @@
 #!/bin/bash
 export HOME=/config
+shopt -s nullglob
+MODS_PATH="/data/Stardew/game/Mods"
 
-for modPath in /data/Stardew/game/Mods/*/
+if [ -d "$MODS_PATH" ]; then
+  chmod -R a+rwX "$MODS_PATH" || echo "Unable to update permissions for mounted Mods directory: $MODS_PATH"
+fi
+
+for modPath in "$MODS_PATH"/*/
 do
   mod=$(basename "$modPath")
 
   # Normalize mod name ot uppercase and only characters, eg. "Always On Server" => ENABLE_ALWAYSONSERVER_MOD
   var="ENABLE_$(echo "${mod^^}" | tr -cd '[A-Z]')_MOD"
 
-  # Remove the mod if it's not enabled
+  # Mods are bind-mounted from the host. Do not remove disabled mods here,
+  # otherwise the host directory would be modified.
   if [ "${!var}" != "true" ]; then
-    echo "Removing ${modPath} (${var}=${!var})"
-    rm -rf "$modPath"
+    echo "Leaving mounted mod ${modPath} unchanged (${var}=${!var}); remove it from the local Mods directory to disable it"
     continue
   fi
 

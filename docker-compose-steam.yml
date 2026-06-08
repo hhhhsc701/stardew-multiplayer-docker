@@ -2,23 +2,12 @@
 
 services:
   valley:
-    build:
-      context: docker
-      dockerfile: Dockerfile-steam
-      args:
-        ## Recommended: set as env_variable during build
-        STEAM_USER: ${STEAM_USER}
-        ## Recommended: set as env_variable during build
-        STEAM_PASS: ${STEAM_PASS}
-        ## Recommended: set as env_variable during build
-        STEAM_GUARD: ${STEAM_GUARD}
-        ## Stardew steamId
-        SRCDS_APPID: 413150
+    image: stardew-multiplayer-docker-valley
     container_name: stardew
     restart: always  # 修改为 always，确保机器重启后容器也启动
     environment:
       # VNC 设置
-      - VNC_PASSWORD=insecure # VNC密码
+      - VNC_PASSWORD=xiangjie # VNC密码
       - DISPLAY_HEIGHT=900 # 显示高度
       - DISPLAY_WIDTH=1200 # 显示宽度
       - X11VNC_EXTRA_OPTS=-noxdamage -reopen -forever
@@ -32,12 +21,12 @@ services:
       - ALWAYS_ON_SERVER_PET_NAME=${ALWAYS_ON_SERVER_PET_NAME-Rufus} # 宠物名称
       - ALWAYS_ON_SERVER_FARM_CAVE_CHOICE_MUSHROOMS=${ALWAYS_ON_SERVER_FARM_CAVE_CHOICE_MUSHROOMS-true} # 农场洞穴选择蘑菇
       - ALWAYS_ON_SERVER_COMMUNITY_CENTER_RUN=${ALWAYS_ON_SERVER_COMMUNITY_CENTER_RUN-true} # 社区中心任务开启
-      - ALWAYS_ON_SERVER_TIME_OF_DAY_TO_SLEEP=${ALWAYS_ON_SERVER_TIME_OF_DAY_TO_SLEEP-630} # 每日睡觉时间
+      - ALWAYS_ON_SERVER_TIME_OF_DAY_TO_SLEEP=${ALWAYS_ON_SERVER_TIME_OF_DAY_TO_SLEEP-1880} # 每日睡觉时间
       - ALWAYS_ON_SERVER_LOCK_PLAYER_CHESTS=${ALWAYS_ON_SERVER_LOCK_PLAYER_CHESTS-false} # 锁定玩家箱子
       - ALWAYS_ON_SERVER_CLIENTS_CAN_PAUSE=${ALWAYS_ON_SERVER_CLIENTS_CAN_PAUSE-true} # 客户端可以暂停
       - ALWAYS_ON_SERVER_COPY_INVITE_CODE_TO_CLIPBOARD=${ALWAYS_ON_SERVER_COPY_INVITE_CODE_TO_CLIPBOARD-false} # 复制邀请码到剪贴板
 
-      - ALWAYS_ON_SERVER_FESTIVALS_ON=${ALWAYS_ON_SERVER_FESTIVALS_ON-true}
+      - ALWAYS_ON_SERVER_FESTIVALS_ON=${ALWAYS_ON_SERVER_FESTIVALS_ON-false}
       - ALWAYS_ON_SERVER_EGG_HUNT_COUNT_DOWN=${ALWAYS_ON_SERVER_EGG_HUNT_COUNT_DOWN-600}
       - ALWAYS_ON_SERVER_FLOWER_DANCE_COUNT_DOWN=${ALWAYS_ON_SERVER_FLOWER_DANCE_COUNT_DOWN-600}
       - ALWAYS_ON_SERVER_LUAU_SOUP_COUNT_DOWN=${ALWAYS_ON_SERVER_LUAU_SOUP_COUNT_DOWN-600}
@@ -74,9 +63,9 @@ services:
       - ENABLE_CONSOLECOMMANDS_MOD=${ENABLE_CONSOLECOMMANDS_MOD-false} # 启用控制台命令模组
 
       # Time Speed mod
-      - ENABLE_TIMESPEED_MOD=${ENABLE_TIMESPEED_MOD-false} # 启用时间速度模组
+      - ENABLE_TIMESPEED_MOD=${ENABLE_TIMESPEED_MOD-true} # 启用时间速度模组
 
-      ## 游戏内一天的长度（默认为20小时）
+      ## 游戏内一天的长度
       ##   7.0 = 现实14分钟对应游戏1天（默认）
       ##  10.0 = 20分钟
       ##  15.0 = 30分钟
@@ -86,10 +75,10 @@ services:
       ## 300.0 = 10小时
       ## 600.0 = 20小时（实时）
 
-      - TIME_SPEED_DEFAULT_TICK_LENGTH=${TIME_SPEED_DEFAULT_TICK_LENGTH-7.0} # 默认时间流速
-      - TIME_SPEED_TICK_LENGTH_BY_LOCATION_INDOORS=${TIME_SPEED_TICK_LENGTH_BY_LOCATION_INDOORS-7.0} # 室内时间流速
-      - TIME_SPEED_TICK_LENGTH_BY_LOCATION_OUTDOORS=${TIME_SPEED_TICK_LENGTH_BY_LOCATION_OUTDOORS-7.0} # 室外时间流速
-      - TIME_SPEED_TICK_LENGTH_BY_LOCATION_MINE=${TIME_SPEED_TICK_LENGTH_BY_LOCATION_MINE-7.0} # 矿洞时间流速
+      - TIME_SPEED_DEFAULT_TICK_LENGTH=${TIME_SPEED_DEFAULT_TICK_LENGTH-10.0} # 默认时间流速
+      - TIME_SPEED_TICK_LENGTH_BY_LOCATION_INDOORS=${TIME_SPEED_TICK_LENGTH_BY_LOCATION_INDOORS-10.0} # 室内时间流速
+      - TIME_SPEED_TICK_LENGTH_BY_LOCATION_OUTDOORS=${TIME_SPEED_TICK_LENGTH_BY_LOCATION_OUTDOORS-10.0} # 室外时间流速
+      - TIME_SPEED_TICK_LENGTH_BY_LOCATION_MINE=${TIME_SPEED_TICK_LENGTH_BY_LOCATION_MINE-10.0} # 矿洞时间流速
 
       - TIME_SPEED_ENABLE_ON_FESTIVAL_DAYS=${TIME_SPEED_ENABLE_ON_FESTIVAL_DAYS-false} # 节日启用时间控制
       - TIME_SPEED_FREEZE_TIME_AT=${TIME_SPEED_FREEZE_TIME_AT-null} # 在指定时间冻结
@@ -116,7 +105,7 @@ services:
       - CROPS_ANYTIME_ANYWHERE_FORCE_TILLABLE_OTHER=${CROPS_ANYTIME_ANYWHERE_FORCE_TILLABLE_OTHER-false} # 强制其他地形可耕种
 
       # Friends Forever mod
-      - ENABLE_FRIENDSFOREVER_MOD=${ENABLE_FRIENDSFOREVER_MOD-false} # 启用友谊永固模组
+      - ENABLE_FRIENDSFOREVER_MOD=${ENABLE_FRIENDSFOREVER_MOD-true} # 启用友谊永固模组
 
       - FRIENDS_FOREVER_AFFECT_SPOUSE=${FRIENDS_FOREVER_AFFECT_SPOUSE-false} # 影响配偶
       - FRIENDS_FOREVER_AFFECT_DATES=${FRIENDS_FOREVER_AFFECT_DATES-true}  # 影响约会对象
@@ -130,7 +119,7 @@ services:
       - ENABLE_NONDESTRUCTIVENPCS_MOD=${ENABLE_NONDESTRUCTIVENPCS_MOD-false} # 启用非破坏性NPC模组
 
       # 开启拖拉机模组Tractor，
-      - ENABLE_TRACTOR_MOD=${ENABLE_TRACTOR_MOD-true}
+      - ENABLE_TRACTOR_MOD=${ENABLE_TRACTOR_MOD-false}
       # 拖拉机发动声音（由于Docker环境没有声音输出设备，这里需要设置为None，否则会报错）
       - TRACTOR_SOUNDEFFECTS=${TRACTOR_SOUNDEFFECTS-None}
 
@@ -144,9 +133,12 @@ services:
       - 5801:5800
       # Game
       - 24642:24642/udp
+      - 24642:24642/tcp
     volumes:
       # 存档保存到这里
       - ./valley_saves:/config/xdg/config/StardewValley/Saves
+      # Mods 使用本地目录挂载，不打进镜像
+      - ./mods:/data/Stardew/game/Mods
       # If you'd like to set an existing savegame before the first start otherwise this file will be edited when starting the first game
       - ./configs/autoload.json:/data/Stardew/game/Mods/AutoLoadGame/config.json
     # deploy:

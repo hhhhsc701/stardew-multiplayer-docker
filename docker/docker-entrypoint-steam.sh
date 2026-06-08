@@ -1,20 +1,14 @@
 #!/bin/bash
 export HOME=/config
+shopt -s nullglob
+MODS_PATH="${GAME_PATH}/Mods"
 
-for modPath in $GAME_PATH/Mods/*/
+if [ -d "$MODS_PATH" ]; then
+  chmod -R a+rwX "$MODS_PATH" || echo "Unable to update permissions for mounted Mods directory: $MODS_PATH"
+fi
+
+for modPath in "$MODS_PATH"/*/
 do
-  mod=$(basename "$modPath")
-
-  # Normalize mod name ot uppercase and only characters, eg. "Always On Server" => ENABLE_ALWAYSONSERVER_MOD
-  var="ENABLE_$(echo "${mod^^}" | tr -cd '[A-Z]')_MOD"
-
-  # Remove the mod if it's not enabled
-  if [ "${!var}" != "true" ]; then
-    echo "Removing ${modPath} (${var}=${!var})"
-    rm -rf "$modPath"
-    continue
-  fi
-
   if [ -f "${modPath}/config.json.template" ]; then
     echo "Configuring ${modPath}config.json"
 
